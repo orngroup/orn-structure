@@ -1,1 +1,1123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TripFactory · Business Structure</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#111e38;
+  --navy2:#1a2d4f;
+  --blue:#1778b8;
+  --blue-lt:#e6f4fc;
+  --white:#fff;
+  --surface:#f4f7fb;
+  --border:#dde5f2;
+  --text:#111e38;
+  --mid:#2e3d5a;
+  --soft:#6a7a98;
 
+  --mkt:#d48a15;   --mkt-bg:#fff8ed;  --mkt-dk:#7a4d08;
+  --sales:#1a9e75; --sales-bg:#e6f8f2;--sales-dk:#0a5a46;
+  --ops:#1778b8;   --ops-bg:#e6f4fc;  --ops-dk:#0e4e7a;
+  --visa:#6b5ce7;  --visa-bg:#f0effe; --visa-dk:#3c2fa0;
+  --cs:#c64120;    --cs-bg:#fceee8;   --cs-dk:#7a2610;
+  --fin:#2a8a18;   --fin-bg:#eaf6e6;  --fin-dk:#185a0a;
+  --tours:#0e7490; --tours-bg:#e0f5fb;--tours-dk:#064e60;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Plus Jakarta Sans',system-ui,sans-serif;
+  background:var(--surface);
+  color:var(--text);
+  line-height:1.6;
+  font-size:14px;
+}
+
+/* ── HERO ── */
+.hero{
+  background:var(--navy);
+  border-bottom:4px solid var(--blue);
+  position:sticky;top:0;z-index:200;
+  box-shadow:0 2px 20px rgba(0,0,0,.22);
+}
+.hero-inner{
+  max-width:1440px;margin:0 auto;
+  padding:0 32px;height:68px;
+  display:flex;align-items:center;justify-content:space-between;gap:20px;
+}
+.hero-left{display:flex;align-items:center;gap:16px}
+.logo-wrap{background:white;border-radius:7px;padding:5px 10px;height:44px;display:flex;align-items:center}
+.logo-wrap img{height:30px;width:auto}
+.hdiv{width:1px;height:28px;background:rgba(255,255,255,.15)}
+.hero-title{font-size:18px;font-weight:800;color:white;letter-spacing:-.3px}
+.hero-sub{font-size:10px;color:rgba(255,255,255,.42);font-weight:500;letter-spacing:.07em;text-transform:uppercase}
+.hero-pills{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.hpill{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.75);font-size:10.5px;font-weight:600;padding:5px 12px;border-radius:100px;white-space:nowrap}
+
+/* ── TABS ── */
+.tab-bar{
+  background:var(--navy2);
+  border-bottom:1px solid rgba(255,255,255,.08);
+  position:sticky;top:68px;z-index:190;
+}
+.tab-inner{max-width:1440px;margin:0 auto;padding:0 32px;display:flex;gap:4px}
+.tab-btn{
+  background:none;border:none;cursor:pointer;
+  padding:14px 22px;font-size:13px;font-weight:600;
+  color:rgba(255,255,255,.45);letter-spacing:.01em;
+  border-bottom:3px solid transparent;
+  transition:color .2s,border-color .2s;
+  font-family:inherit;white-space:nowrap;
+}
+.tab-btn:hover{color:rgba(255,255,255,.75)}
+.tab-btn.active{color:white;border-bottom-color:var(--blue)}
+
+/* ── TAB PANELS ── */
+.tab-panel{display:none;max-width:1440px;margin:0 auto;padding:36px 32px 64px}
+.tab-panel.active{display:block}
+
+/* ── STRUCTURE TAB ── */
+
+/* Intro */
+.intro-bar{
+  background:white;border:1px solid var(--border);
+  border-left:5px solid var(--blue);border-radius:12px;
+  padding:20px 26px;margin-bottom:28px;
+  display:flex;align-items:flex-start;gap:18px;
+}
+.ib-icon{width:46px;height:46px;background:var(--blue-lt);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.intro-bar h2{font-size:15px;font-weight:800;color:var(--navy);margin-bottom:4px}
+.intro-bar p{font-size:13px;color:var(--mid);line-height:1.7;max-width:900px}
+
+/* Dept grid */
+.dept-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-bottom:28px}
+.dept-card{
+  background:white;border:1px solid var(--border);
+  border-radius:16px;overflow:hidden;
+  box-shadow:0 1px 6px rgba(17,30,56,.06);
+  display:flex;flex-direction:column;
+}
+.dept-head{
+  padding:18px 22px 14px;
+  border-bottom:1px solid var(--border);
+}
+.dept-head-top{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.dept-icon{
+  width:42px;height:42px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;
+}
+.dept-num{font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;padding:3px 10px;border-radius:100px;flex-shrink:0}
+.dept-name{font-size:16px;font-weight:800;color:var(--navy)}
+.dept-mission{font-size:12px;color:var(--soft);line-height:1.55;font-style:italic}
+
+/* Sub-teams */
+.sub-teams{padding:16px 22px;flex:1;display:flex;flex-direction:column;gap:14px}
+.sub-team{background:var(--surface);border-radius:10px;padding:12px 14px;border:1px solid var(--border)}
+.sub-team-head{
+  display:flex;align-items:center;gap:8px;margin-bottom:8px;
+}
+.st-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.st-name{font-size:12.5px;font-weight:700;color:var(--navy)}
+.st-badge{font-size:9px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:2px 8px;border-radius:100px;margin-left:auto}
+
+/* Roles list */
+.roles-list{display:flex;flex-direction:column;gap:6px}
+.role-item{
+  background:white;border:1px solid var(--border);border-radius:7px;
+  padding:8px 12px;
+}
+.role-title{font-size:12px;font-weight:700;color:var(--navy);margin-bottom:2px}
+.role-duties{font-size:11px;color:var(--mid);line-height:1.55}
+.role-duties li{padding-left:10px;position:relative;margin-bottom:1px}
+.role-duties li::before{content:'–';position:absolute;left:0;color:var(--soft)}
+
+/* Functions strip */
+.func-strip{
+  background:white;border:1px solid var(--border);
+  border-radius:12px;padding:18px 22px;margin-top:6px;
+}
+.func-strip h4{font-size:10px;font-weight:800;color:var(--soft);text-transform:uppercase;letter-spacing:.09em;margin-bottom:10px}
+.func-pills{display:flex;flex-wrap:wrap;gap:6px}
+.fpill{font-size:11.5px;font-weight:600;padding:5px 13px;border-radius:100px;border:1px solid var(--border);color:var(--mid);background:var(--surface)}
+
+/* Dept colour theming */
+.dm .dept-icon{background:var(--mkt-bg);}
+.dm .dept-num{background:var(--mkt-bg);color:var(--mkt-dk)}
+.dm .st-dot{background:var(--mkt)}
+.dm .st-badge{background:var(--mkt-bg);color:var(--mkt-dk)}
+.dm .dept-head{border-top:3px solid var(--mkt)}
+
+.ds .dept-icon{background:var(--sales-bg)}
+.ds .dept-num{background:var(--sales-bg);color:var(--sales-dk)}
+.ds .st-dot{background:var(--sales)}
+.ds .st-badge{background:var(--sales-bg);color:var(--sales-dk)}
+.ds .dept-head{border-top:3px solid var(--sales)}
+
+.do .dept-icon{background:var(--ops-bg)}
+.do .dept-num{background:var(--ops-bg);color:var(--ops-dk)}
+.do .st-dot{background:var(--ops)}
+.do .st-badge{background:var(--ops-bg);color:var(--ops-dk)}
+.do .dept-head{border-top:3px solid var(--ops)}
+
+.dt .dept-icon{background:var(--tours-bg)}
+.dt .dept-num{background:var(--tours-bg);color:var(--tours-dk)}
+.dt .st-dot{background:var(--tours)}
+.dt .st-badge{background:var(--tours-bg);color:var(--tours-dk)}
+.dt .dept-head{border-top:3px solid var(--tours)}
+
+.dv .dept-icon{background:var(--visa-bg)}
+.dv .dept-num{background:var(--visa-bg);color:var(--visa-dk)}
+.dv .st-dot{background:var(--visa)}
+.dv .st-badge{background:var(--visa-bg);color:var(--visa-dk)}
+.dv .dept-head{border-top:3px solid var(--visa)}
+
+.dc .dept-icon{background:var(--cs-bg)}
+.dc .dept-num{background:var(--cs-bg);color:var(--cs-dk)}
+.dc .st-dot{background:var(--cs)}
+.dc .st-badge{background:var(--cs-bg);color:var(--cs-dk)}
+.dc .dept-head{border-top:3px solid var(--cs)}
+
+.df .dept-icon{background:var(--fin-bg)}
+.df .dept-num{background:var(--fin-bg);color:var(--fin-dk)}
+.df .st-dot{background:var(--fin)}
+.df .st-badge{background:var(--fin-bg);color:var(--fin-dk)}
+.df .dept-head{border-top:3px solid var(--fin)}
+
+/* ── FLOW TAB ── */
+.flow-wrap{padding:0}
+
+.flow-intro{
+  background:var(--navy);border-radius:14px;
+  padding:24px 32px;margin-bottom:32px;
+  display:flex;align-items:center;gap:20px;
+}
+.flow-intro-icon{font-size:32px;flex-shrink:0}
+.flow-intro h2{font-size:17px;font-weight:800;color:white;margin-bottom:4px}
+.flow-intro p{font-size:13px;color:rgba(255,255,255,.5);line-height:1.6;max-width:700px}
+
+/* Org chart */
+.org-chart{
+  display:flex;flex-direction:column;align-items:center;gap:0;
+}
+
+/* CEO row */
+.ceo-row{
+  display:flex;justify-content:center;margin-bottom:0;
+}
+.ceo-box{
+  background:var(--navy);color:white;
+  border-radius:12px;padding:14px 32px;
+  text-align:center;min-width:200px;
+  border:2px solid var(--blue);
+  position:relative;
+}
+.ceo-box h3{font-size:15px;font-weight:800;margin-bottom:2px}
+.ceo-box p{font-size:11px;color:rgba(255,255,255,.5)}
+
+/* Connector lines */
+.v-line{width:2px;height:32px;background:var(--border);margin:0 auto}
+.h-connector{
+  display:flex;align-items:flex-start;
+  justify-content:center;
+  position:relative;
+  width:100%;
+}
+.h-connector::before{
+  content:'';
+  position:absolute;
+  top:0;left:10%;right:10%;
+  height:2px;background:var(--border);
+}
+.dept-cols{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:12px;
+  width:100%;
+  margin-top:2px;
+}
+
+/* Flow dept boxes */
+.fd-col{
+  display:flex;flex-direction:column;align-items:center;gap:0;
+}
+.fd-vline{width:2px;height:28px;margin:0 auto}
+.fd-box{
+  border-radius:10px;padding:12px 10px 10px;
+  text-align:center;width:100%;border:1.5px solid transparent;
+  cursor:default;transition:transform .15s,box-shadow .15s;
+}
+.fd-box:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.1)}
+.fd-box .fd-icon{font-size:20px;margin-bottom:4px}
+.fd-box h4{font-size:11.5px;font-weight:800;margin-bottom:3px}
+.fd-box p{font-size:9.5px;line-height:1.45;font-weight:500}
+
+/* Sub-dept indicators */
+.fd-subs{
+  display:flex;flex-direction:column;gap:5px;
+  width:100%;margin-top:8px;
+}
+.fd-sub{
+  border-radius:6px;padding:6px 8px;
+  font-size:9.5px;font-weight:600;text-align:center;
+  border:1px solid rgba(0,0,0,.06);
+}
+
+/* Flow dept colours */
+.fd-mkt .fd-vline{background:var(--mkt)}
+.fd-mkt .fd-box{background:var(--mkt-bg);border-color:rgba(212,138,21,.25)}
+.fd-mkt .fd-box h4{color:var(--mkt-dk)}
+.fd-mkt .fd-box p{color:var(--mkt)}
+.fd-mkt .fd-sub{background:rgba(212,138,21,.1);color:var(--mkt-dk)}
+
+.fd-sales .fd-vline{background:var(--sales)}
+.fd-sales .fd-box{background:var(--sales-bg);border-color:rgba(26,158,117,.25)}
+.fd-sales .fd-box h4{color:var(--sales-dk)}
+.fd-sales .fd-box p{color:var(--sales)}
+.fd-sales .fd-sub{background:rgba(26,158,117,.1);color:var(--sales-dk)}
+
+.fd-ops .fd-vline{background:var(--ops)}
+.fd-ops .fd-box{background:var(--ops-bg);border-color:rgba(23,120,184,.25)}
+.fd-ops .fd-box h4{color:var(--ops-dk)}
+.fd-ops .fd-box p{color:var(--ops)}
+.fd-ops .fd-sub{background:rgba(23,120,184,.1);color:var(--ops-dk)}
+
+.fd-tours .fd-vline{background:var(--tours)}
+.fd-tours .fd-box{background:var(--tours-bg);border-color:rgba(14,116,144,.25)}
+.fd-tours .fd-box h4{color:var(--tours-dk)}
+.fd-tours .fd-box p{color:var(--tours)}
+.fd-tours .fd-sub{background:rgba(14,116,144,.1);color:var(--tours-dk)}
+
+.fd-visa .fd-vline{background:var(--visa)}
+.fd-visa .fd-box{background:var(--visa-bg);border-color:rgba(107,92,231,.25)}
+.fd-visa .fd-box h4{color:var(--visa-dk)}
+.fd-visa .fd-box p{color:var(--visa)}
+.fd-visa .fd-sub{background:rgba(107,92,231,.1);color:var(--visa-dk)}
+
+.fd-cs .fd-vline{background:var(--cs)}
+.fd-cs .fd-box{background:var(--cs-bg);border-color:rgba(198,65,32,.25)}
+.fd-cs .fd-box h4{color:var(--cs-dk)}
+.fd-cs .fd-box p{color:var(--cs)}
+.fd-cs .fd-sub{background:rgba(198,65,32,.1);color:var(--cs-dk)}
+
+.fd-fin .fd-vline{background:var(--fin)}
+.fd-fin .fd-box{background:var(--fin-bg);border-color:rgba(42,138,24,.25)}
+.fd-fin .fd-box h4{color:var(--fin-dk)}
+.fd-fin .fd-box p{color:var(--fin)}
+.fd-fin .fd-sub{background:rgba(42,138,24,.1);color:var(--fin-dk)}
+
+/* Customer journey flow */
+.journey-section{margin-top:40px}
+.journey-title{
+  font-size:13px;font-weight:800;color:var(--soft);
+  text-transform:uppercase;letter-spacing:.09em;
+  margin-bottom:20px;text-align:center;
+}
+.journey-flow{
+  display:flex;align-items:stretch;gap:0;
+  background:white;border:1px solid var(--border);
+  border-radius:14px;overflow:hidden;
+}
+.jf-step{
+  flex:1;padding:18px 14px;
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;gap:6px;
+  position:relative;
+}
+.jf-step:last-child{border-right:none}
+.jf-step::after{
+  content:'›';
+  position:absolute;right:-11px;top:50%;transform:translateY(-50%);
+  font-size:20px;color:var(--border);z-index:1;
+  background:white;padding:2px 0;
+  line-height:1;
+}
+.jf-step:last-child::after{display:none}
+.jf-num{
+  width:26px;height:26px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:800;flex-shrink:0;
+}
+.jf-dept{font-size:8.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 7px;border-radius:100px;width:fit-content}
+.jf-step h4{font-size:12px;font-weight:800;color:var(--navy)}
+.jf-step p{font-size:11px;color:var(--mid);line-height:1.55}
+
+/* Handoff matrix */
+.matrix-section{margin-top:32px}
+.matrix-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:12px;
+}
+.matrix-card{
+  background:white;border:1px solid var(--border);
+  border-radius:10px;padding:14px 16px;
+}
+.matrix-card h4{font-size:12px;font-weight:800;color:var(--navy);margin-bottom:8px;display:flex;align-items:center;gap:7px}
+.matrix-card ul{list-style:none}
+.matrix-card li{font-size:11.5px;color:var(--mid);padding:3px 0 3px 12px;position:relative;border-bottom:1px solid var(--border);line-height:1.5}
+.matrix-card li:last-child{border-bottom:none}
+.matrix-card li::before{content:'→';position:absolute;left:0;color:var(--soft);font-size:10px;top:4px}
+
+/* Footer */
+footer{background:var(--navy);border-top:4px solid var(--blue);margin-top:20px}
+.footer-inner{max-width:1440px;margin:0 auto;padding:18px 32px;display:flex;justify-content:space-between;align-items:center}
+footer span{font-size:12px;color:rgba(255,255,255,.32);font-weight:500}
+footer strong{color:rgba(255,255,255,.55)}
+
+/* Responsive */
+@media(max-width:1100px){
+  .dept-grid{grid-template-columns:repeat(2,1fr)}
+  .dept-cols{grid-template-columns:repeat(4,1fr)}
+}
+@media(max-width:700px){
+  .dept-grid{grid-template-columns:1fr}
+  .dept-cols{grid-template-columns:repeat(2,1fr)}
+  .journey-flow{flex-direction:column}
+  .jf-step::after{display:none}
+  .matrix-grid{grid-template-columns:1fr}
+  .tab-inner{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .tab-btn{padding:12px 14px;font-size:12px}
+  .tab-panel{padding:20px 16px 48px}
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="logo-wrap"><img src="data:image/png;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/7QEsUGhvdG9zaG9wIDMuMAA4QklNBAQAAAAAARAcAVoAAxslRxwCeAABABwCWgAJU0lOR0FQT1JFHAJ0AAEAHAJlAAEAHAJQAAhIYW5kLW91dBwCXwABABwCGQABABwCaQAQVHJpcEZhY3RvcnkgTG9nbxwCBQAQVHJpcEZhY3RvcnkgTG9nbxwCNwAKMjAyNDoxMDoyORwCcwAUTmV4dXNETUMsVHJpcEZhY3RvcnkcAm4AFE5leHVzRE1DLFRyaXBGYWN0b3J5HAJnAAEAHAJ6AAJDThwCKAAMU2VlIFJlbGVhc2UgHAIUADtXZWJzaXRlRGlzdHJpYnV0aW9ufEVudGVybWVkaWFEaXN0cmlidXRpb258UFJOQXJjaGl2ZV8xWWVhchwCDwABAP/iAhxJQ0NfUFJPRklMRQABAQAAAgxsY21zAhAAAG1udHJSR0IgWFlaIAfcAAEAGQADACkAOWFjc3BBUFBMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD21gABAAAAANMtbGNtcwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACmRlc2MAAAD8AAAAXmNwcnQAAAFcAAAAC3d0cHQAAAFoAAAAFGJrcHQAAAF8AAAAFHJYWVoAAAGQAAAAFGdYWVoAAAGkAAAAFGJYWVoAAAG4AAAAFHJUUkMAAAHMAAAAQGdUUkMAAAHMAAAAQGJUUkMAAAHMAAAAQGRlc2MAAAAAAAAAA2MyAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHRleHQAAAAARkIAAFhZWiAAAAAAAAD21gABAAAAANMtWFlaIAAAAAAAAAMWAAADMwAAAqRYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9jdXJ2AAAAAAAAABoAAADLAckDYwWSCGsL9hA/FVEbNCHxKZAyGDuSRgVRd13ta3B6BYmxmnysab9908PpMP///9sAQwAEAgMDAwIEAwMDBAQEBAUJBgUFBQULCAgGCQ0LDQ0NCwwMDhAUEQ4PEw8MDBIYEhMVFhcXFw4RGRsZFhoUFhcW/9sAQwEEBAQFBQUKBgYKFg8MDxYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYW/8AAEQgApQGQAwEiAAIRAQMRAf/EAB0AAQACAgMBAQAAAAAAAAAAAAAHCAYJAwQFAQL/xABUEAABAwMCBAIDCAwKBgsAAAABAAIDBAURBgcIEiExE0EUIlEJFTJhcYGR0RYYQlJTVVaSlJWhwRcjVIKisbLC0tMzNGJyk6MkNThDc3R1g7O08P/EABsBAQADAQEBAQAAAAAAAAAAAAACAwQFAQYH/8QAOREAAgIBAgQCBgcHBQAAAAAAAAECAxEEIQUSEzEUQRVRcYGRoSIyVGGiwdEGJEJSU1WjFiOx4fD/2gAMAwEAAhEDEQA/AL/IiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIi445oXzPhZKx0kWOdgcC5ue2R5ZwgP2SAMnsuhZb5ZbvNUxWq7UNdJRSCOpZTVLJTA8jIa8NJ5TjyKizjV251Dr/auUaWu1xguds5p22+nqnxw3NmPWhe0EBzsDLCfPp2d01/aB1XqTQupI73pe6VNqr4Dyl0XQPAPVkjD0e3I6tcD9K26bRq+Dkpb+ozW6jpyw1sbZEVc+Gzit05rLwLDrkU+n76/DI6gvxRVrvLlcf8AROP3rjj2OPZWLaQRkHKzWVTrlyzWC6E4zWYs+oiKsmEREAREQBERAEREAREQBERAEREAREQBERAERfHODQS4gAdyfJAfUXiXjWWkrTze+uqLNQ8nwvSbjFHj85yxG8cQGzFseW1W41jcR3FPOZz/AMsOU41zl2TIucV3ZJKKDLxxcbLURIgvFzuGP5Lapf63hoWLXjja0DDzC2aU1HWEfBMoghB/5jiPoVsdLe+0WQd9S/iLOIqe3fjkkORa9twPY6rvH7mR/vWMXPjX3GmaW0GmNNUmeznieYj+m0K1cP1D8vmQeqq9ZelFTPZHjF1HWa8o7XuBbbV71V8zIDWUEL4pKR7iGte4F7g5mT17EDqM4wbmDsqLqJ0vE0WV2xsWYhFHFx3t0XRb7wbTTmvF7na0CUU+adsjo/EbEXZzzFgznGOoGcrr7sb6aS2/3OsOh7zS3KWsvvhls9PE10VO2SQxML8kE5eD0aCQOqiqptpY77+496kcZySeii/iU3vsWzcFlkvFpr7gbzPIxopSxvhMj5edxLiMn1hho6nr2wpLo52VNJHURh3JKwPbzDBwRkZHkouElFSa2ZJSTbS8jlRUx304uNd2Tcm+6b0xZ7LTUdor5aJk9XDJPNKY3FjnnD2tALgSBjtjqoyu3FNvfXNLW6tho2nypLZAz9rmuP7Vshw66ST2Rmlq608GxoEeRTI//BavbtvVu5cg8Ve4+oy1/wAJsVcYR9EfKsYumo9SXNxdcdQ3isJ7mouE0n9pxV0eFz85Ig9bHyRtWumpdPWxvNcb7baQDuaisjj/ALTgvGh3S21murLZFr7TUlXK4NjhZdoXOe49gMO6n4lqtdG1xy6MOPtLclOQcvKWDHsx0Vq4VHzn8iHjX6jb+ihzgMvl/v8Aw3Wer1BNNUSQyz01LUTEl81PHIWxkuPwsAFufMNC+8TVPvrNqLTB2lqKWOgbUH31D3RDrzN5TJ4nUxcvPkM9bPzLlurFjrbWxs5/oKWCYiiivivtG7l30RQwbR3RlDcWVwdW8s7IZJIuU45XvBAAdguHcj29j2t5bFuhedhW2fSuoIKLWHgU3pVZDIYGzPby+OI3gEx8xzg4+Lpnp4oJpfSW/wAj1yeXt2M81LbY7zp6utMs88EddTSQOlp5DHJGHNLeZjh1a4ZyCPMLXRt/rHWHD5xA3COvdPVvo6s0d7ppJCffGAHIeC77rlIkY4+3HYlX+2Xtuq7RtdZbbre6Mud/p6UNr6tjuYSPySPWwOYhuAXY6kE+ahDjq2BvG4FZR6y0RSQ1F6gi9Gr6R0rYjVxDJY9rnYBe3JGCRlpH3ozq0dkITlXP6rKL4SlFTj3Rkl54t9lqGjZLBebjcHuYHeBSWuXnbkdiXhrQR59VS3iM1To/Wm6FbqfRtkrrRTXH+Nq4Ksx+vUZPNIxrCQ0O6EjJ9bJ81+bts1uzbXubWbc6kbyd3R298zfmdHzArzf4N9xM4+wHVH6mqP8AAunp6NPS+aEvmY7bbbFiS+RjPkQRkHuD5qZ9jOJncDbi0Osz/B1Da2R8tJTXKV4dSHy5JBl3J/sHI9nKsLotod1asA0+3GqHg9ibVK0fS4BZDZeG7e25uAi0FWU4P3VZUwQAfnPz+xW2y0844sax7SEFbF5imZhc+MrdqoqC+lotNUcflG2gkk/a6VZFoDjY1NTVkcestJ26vpc4fNa3up5mj2hj3Oa75Mt+VeFpjgy3SryHXa56ftDOnMHVD6iQfMxgH9JSvt/wVaMt0jJ9W6kud8e3BNPTtFHAT7DgueR/OCxWS0CWMfA0QWqbzknzavXGndw9G0+p9MVjqihqC5nrsLJIpGnDo3tPwXA9x8hGQQVkS8rRWmrDpLT0Fi03aqa226mB8Knp2crRk5JPmST1JOSfNequPLGXjsdBZxuERF4ehERAEREAREQBERAEREAREQBERAFTj3QnRO62odzqOssFpv140+LYxkUNta+SOnmD3+JzxsPwj6h5iOowM9FcdFdRc6Z86WSuytTjys1Xx7SbnSP9TbXU7ne33lmz9PKu5TbLbvTNPh7a6nAH31vcz+1hbREIB7hbvSln8qM3go+s1Qa60Rq/RklNHqzTtfZ31rXOpm1kYaZQ0gOIGT25h9K9HaXa3XG5clczRlnZcDbfDNVzVcUPh8/Ny/DcM55HdvYpy91LqQ7cbStGD1itM8pH+9MB/cXa9ytm5dW6xp8/DoaR+PkklH71tepn4XrY3/7Mypj1un5Ef0/CbvdI0F+n7bCT5SXiHI/Nyu3Dwg7zPHrUlhj/AN66/UwrYOi53pK/7jZ4Ov7ykW3PBjrcapoKrVd8slNbaeoZLUx0Usk00jWuDuRuWNaM4xknpnOCruhFBfF1xDRbR1NHYrRaYrrfa2D0jkqJSyCmh5i0Ofy+s4uLXYaMdAST2zRKd2qml3ZOMa6Itksz6O0rNrWLWEun7c+/Qw+DHcjTN9IazBGA/v2JHtwSOy57tpvT90vFFdrlZLfWV9tcXUVVUUrHy0xPnG4jLfmUA8K/FL/CLrOPR+q7JS2u51jXGgqKKVxgqHNBcYy1+Sx3KCQckHBHQ4zZLKrtrsqlyz7k4ShOOYnSvVntN3ZCy62yjrm08omhFVTslEUg7PbzA4cPaOq7qIqiwijXfDftDqzUVZf7rpl4uFfKZqmamr5ofFkPdxa13Lk+eB17qg+/tjtGmt6tTadsMLorba7k+mpo3yOkc1rQAQXO6n1ubutp61Y8QdS2s341nVNcHNk1DWYIPcCZw/cutwyc5Tab2SMGsjFRTSLccP3DdtFqHZvTGob1puarr7laoKmqkNyqGte97QSeVrwAPiCzyn4Y9jYcEaCpXkfhayof/XIvc4WP+zlon/0Gl/8AjCz5YbL7ed/SfxNUKocq2RGdPw87KwABm3NjOPv4XP8A7Tiu9SbIbQ0xBi230zkHI5rbG7+sFZ8irdtj/ifxJ8kF5HDb6SloaKKjoqeKnp4GBkUMMYYyNo7BrR0AHsC5kRVkgiLp3+50lmsdZdq6TkpqCnkqJ3AZLWMaXOOPkBQHcRVh2h4waLV+6tDpet0dLbqG8VTaWgq2Vniyse44Z4rOUABxwDyk8ufMdVZ4dlZbTOp4msEIWRmsxYwEx8v0oirJjCAAdgiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiICh/unlS2Xfe1U4dk0+nosj2c08x/cvR9yzkxufqiH7+zRO+ifH95Yx7o7P4vEtUR5z4Fno2fJnxHf3lkPuW5P8MGox5e8I/+wxdySxw/3fmcyL/eveXlQFYJxNajvmktidTah03GXXOhoS+ncGc5iJcGmXHnyNJf/N6qjvCturU6W31ptS601neG2qSKo98nTTT1XpTnMIY1zBnJ5y12cdMeS5tOllbXKa8vmbLL1CSi/M2OqsHHhsJqXX19o9baKhjra+CkFHW250rY3ysa5zmSRlxDSRzOBaSM9CPMKWtnd8dudzLxUWjSt4llr6eEzupqmkkge6MEAvbzDDgC5ucHIyq/ceu9ev8ATG60Oj9JX2ay0lHQQ1M8lK1vizyyFx6ucCQ0NaPVHfJznopaWF0b8R2f3nl0q3Xl7r7jo8G/Dlry17rW/WmtbYbJRWR7p4KaWZjp6qblc1vqsJ5WDmJJJycAAdyvO4696tcN3buWhLDfKuz2izCKKQUEpilq5HRte5z5G+tgc4AaCB0yc56TvwK7man3L2trqrVYZNW2qvNGK9kYj9Lb4bXguaOnOObBIAB6HGcqmnFxO6o4l9ayOcSW3Z0Yz7GsY0f1LbRzW6qXVSyl7jNZiFC5PMuDwB3q7VHDnHd9WX+pq/GulS2mqLlVcxjia4MDA95yRzNeRk+ZU6wSxTRNlhkbIxwy1zXAhw+Iha4Nktltx94dGT1NvuTIbJYhJDQR3CZ5hlmJL3RQsGQ05dlzyMZcB164+8I27V7203NoKCqrqj7HbjVNpLnQSyExw8zgzxmtPRr2OwTjuA4HyxVdolOU5QllryJ16hxUVJbes2I6jvlmsFB6bfLtQ22mBx41ZUshZ9LiAtVO4NXFX6/vtfDK2WKqu1VNHI05D2umeQ4H2EEFX+4mOHm27xaioLzXaquNrfb6Q00cEUDJoery4vDXdnHIBIPUAexa7K5op552NdzCF7wCRjmDSRn9it4ZGGG09yGscspNbFrNsuL6x6M2w0/paLRNzuE1otkNJNM6tihY97GAEt6OOMjzwpf4ZOJC3bvaurNON0rV2arpaI1bHuq21EcjA9rXAkNaWnL246YPX2KLtJ8Flqu+lrbdJ9e3KnmraOGokibb4nNjc9gcWg83UAnGV93701p7hp2EqLJo6rqptSa2m9CqbvUECf0ZjS6UM5QAxuCGgDzkySSBiqcNLY+Sv6z9pZGV8FzT7IkDdbi5260lqKay2ykuGo56WQx1E1AY207HA4LWyPd65BznlBHxrNdid8tD7o2SrrLVUvt1TbuU1tDcXMjkha44a/OS1zCenMD36HB70p4ONnY929f1FPdJJ4LDZoWy174Dyvlc4kRwtdj1c4cSfINOOpBXncXO3ts203ortNWTx/eqWlgq6Rk8hkc1jwQWFx+EA9jsZ64x7Mqb0encujFvm9ZFai1R6jWxswieyWNskbg5jgC1zTkEHsQVje7Ov9MbcaSl1Hqqv9GpWODI2Mbzy1EhziONndzjg/IASSAMqDvcwZr7Ns/eTX1ks1shu/g22KRxIhxE0yhuezS5zeg6A83tVeuN/cuTX+9FdBS1RksmnXPobe1rsse5pxNMPaXPBAP3rGrNVo+a91t7Luy6eoxUp43ZZ/a7i2261fq+DT1RQ3Wxy1swho6ivbGYZHk4a1zmOPIScAZ6ZOMqNOMa2cRNprdVaifqlztCPa5ghpKyKJkdLKRGIXwkBznetykjOck5HYQnxC6Io9vrBoi0tiEd8rLA66XeYE83izSExs+Lw2t5RjzyfNWT41dVTycFunHVkp9N1OLb4rXfCcREJ5D9LB9K0KqFdkJVrKltvv59ynnlOElPuipuydBrir3Eop9urfLWX+2c1bStjjjeY+ToX8snqnHMO/tC2DcLNw3buGhqiTd6209Hcm1WKMtaxk0sPKOsrIyWtIdkDGMjuB51t9y4trX7j6ovkjQGUFojg53dmmWXmPXy6QrHuIDd7WG9m7UOiNF19RS2Ke4NobZSwTOiFc4u5fHmc3qWnq4A9GtGcE5Vmpi77XWksLu/URpkq4KWXl+RsAyuOpnhp4HTTysijYMue9wa1vyk9Frsv1Vujwy7wR2un1HJVhkMVWIRNI6iuUDiQWujeenVr25HUEZBWVe6Bbi12r26LZbqss03drEy8RUjZer5pHuafFaO/IG8rc9M85CyLQSc4pSzF+Zf4pKLyt15F7GOa9ge1wLSMgg9CFFHE5vxYtnILfBV2qpu9zuYe+no4JWxBsbCA573nPKMkAAAk9fYob4TeJSy2+1aL2ofpe8TTHwbb74GpjePEe44dyd+QE+3IaO3RYX7pzXip31tVA0jFDYY84PnJNKf6mhKdG/EKuxbbieoXS5oFteHfc+g3Y25GrKK11Nsa2qkpZqeoe1/I9mCS1w6Obhw64Hn06LNaKqpqyIy0tRFPGCW88Tw4ZHcZCpNqerfo/3NnT9DBUSU1Xq25c7hHIWukjdNJK4HH3JZGwEfGvb9ypt9SZ9ZXITyNpWikp2wBx8N0h8R5dy9shvKM98FeWaVKE7E9k8L4nsL25Rg1u0XEREWE0hERAEREAREQBERAEREAREQBERAEREAREQBERAa5/dAZDJxUagH4Ono2D9HYf3rOfcs4C7dDVFT5R2aJn50+f7qw73Qy3VNFxPXWpnjLYrjRUlRTuI+G0ReGcfI6NwUl+5WUDhPra74JDWUdM0DzP8AGvIH9H6V3LGvAe5HMgv3n3snfjF1TT6U4ddT1cszGTV9E+3UjCesks4MYA+Rpc75GlUc1lpzTtj4XtHXg2qP7ItT3Ssm9OMj+dtFA4xtYG55cFxb1xnoeq9neDVW6HEBvFHphllqqeWjqnwUVkZG4Nt3rcrpZyfugPhPdgAdG/H7PH5p6PR140Ho2jJdQ2XSzYIX4wJH+M4SP+UlrSflUdLX0nGvO73fwJXS5+aWNlsZl7ljp4S6g1XquRv+q08FugJHm9xkfj5mR/Sof4ztUUereI/UVwtzxJSUskdvieDkP8BvI5w+Iv58LOdgd2rTtnwjanjt1dCNW3W9SQUNM138bGHQRtFQW9wxgDyD2LgAq+VVLVUzYJaqCaNtVEJ4XytI8aMucOcE/CBLXDPtBV9NbeonbL2IqnNKqMF7S+/A/Jb9E8HUWp7k8Q0rjXXaqeT9w17m/wBmIAfMqI6tvNVqHVNz1DX/AOs3SslrJh7HSPLyPmzj5lM2td4aGXg90jtRp2eSS5TtMd8ayNw8JjJ3OZCOnrGRxY7pnoMdyoMnjkhnkhmY5kkTyyRjhgtcCQQfjBGF7pKXGc5y7t/IXTTjGK8kbMuFC0UmmeGrScDeWNjrRHWzvxjL5R4z3H53H6FrYucpuOpqqekb/rlfI+ENH38pLcD5wrG0PE7Q0fCRHoWnpqxuq4rd7zsl8P8AiGwcpZ6QH5+F4XTl783Xt1WDcEO2lVr3eegq5aVxsmnJo66vlLfULmHmhhz5lzgDj71rj7FRp4SoVtlhZbJWckIGw+V76OwukncXPgpiXkdyWt6/1FajpneMJHjJ8XJ+Prn61tp1u8xaNur2gktoJyOXuT4buy1P6Zpn1t2ttGxpc+pqIImt9pc9rcftVfC9lN+z8yet7xRtm0vCafTtDARgxUkTMEYxhgCpf7qVWyv3R01bS4+FT2aSdo8uaScgn6IwrvMADQGjAHQKnHupum6kXXS2rmRudTuhmtszwOjHh3ixg/KDJ9Cy6BpahZ+8u1S/2WZ77mXZIqDYWrvHhgTXe8TPc/2siDYmj5i1/wBKr17oVdorpxN3OCF7XC10NLRuI+/DDI4fN4uFMnBfu7ovRvCnWPv13pYKnT1ZVF1CZmioqfEd4kYjYeri8u5RjoCDnGCqsayodYalobluvc7XUOt12vMzKiva3MTKh3rlhPk0BwaCemRjuMLdp4PxU5y9hmtkujGKLQ7basj2p9zsp79TyNiul69JZb8Hq6pnmkY1w/3GNL/5iqrtDZ49Q7q6asM5LorjeKWnl5uuWOlbzZ+UZ+lZ5tBZtcb61ek9uYuZmm9Jsc2eqhYfDpYnyF8kj3HIdM4HkYPi7Y5ivB1/p3UGyG+7Ipaciex3Nldapp2nw62FknPE8H7oFoAdjseYdFdVFQc4Z+m8v9CubclGWPorYtBv/wANmqN0eIqTUlferfR6WfTU0P8AFuc6rEcbSHxMZy8oLnF2Hc2AHZwSMKCuN/ceh1luLT6b05I06b0hCaCh8N2Y5ZRhskjfa0crWNPmGE/dLMNzeKPXO6Vpj0Nt9pKptdbdW+DUmkqTVVcwPQsi5Wt8Np83nqB5t6ledvPw6Vm3fC9SagqoWVWoYrpHUXp8HrNoqZ0bmCJpHQtY8sLneZOewCooUq5Q6737JfmW2NSUun27tnY4Tq86b4TN4NSxS+FO6FlJE/OCHGEtbj4+adYVwHx0p4p9LsqSA1hqTFnzeKaTl/esX29u+sr5o6p2h0pb/TxqK6w1r4YGkzSOjbyhpOeVsWQ17nHtyDrhZ/euHTfHbnVlDetNWx11noJI6mlr7PIx5ilABIMbyHdDkdiHD5SFdNRj1Iykk5dvhgri2+VpZS/UyH3UKqgk3msNNE9rpaewgy47t5p5C0H80/SsM4cdPXWtorxuteWyzWfbqzSm3unbzMkq2Ru9HhaD3bG9/iH2Etz3Wa2Lh63o3d3HfqfdImyQ1JZ6XUzmL0h0bQAI4YGEhnToC7AGScOPQ2H3+0Hb7Hwf6l0bo+3CnpaKzPMEEQy54jcJHknu5zg1xJPUklZ3fCuuFEXl9m/+S1VSnKVjWEVT9zx08L1xGU1xqsPjsFvnuEj5O3iECJriflkc75lhvFVriHX+91/1JQkGha8UtA4fdwQgsa/+cQ53yOC83a3WWotN0l+s2l6Z0tbrChZamyQhzp2sdJkthA7ueDy/EDkdV399doNV7WTWyPUNKTBc6GOYVETCYY5iD4lOXjpzMOB8YOR0W1RS1DlJ7tYX5mfLdWEvaZzxq3qOmotBbbUjx4Wk9NUzqpgGMVE0TOh+MMYD/wC4p59zDtjaXYu5XIjD7jfZTnHdsccbB+0OVM9yqXVRvFNftYCYXDUlMLi0zt5ZHwlxjY8s6coIj9UfegHsQr+cBlvbb+FrTHTDqtk9U7p+EnkI/ZhY9YlDSqKfn+po075rm2S+iIuMdAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiICI+K7Y227waepnRVjLbfrWHeg1ro+Zjmu+FFKB1LCQCCOrT1GckHk4Pdp6zaTbSez3eqpKq63CufV1clIXGMdGsYxpcAThrQc4HVxUsIretZ0+nnYh048/Pjc446eFk752xMEsgAe8NAc4Dtk9yoW40tkavdvTNvqrDUU1PfrK9/o/pJLY6mJ+OeJzgCWnLWuacEZBB75E2oo12SrkpR7o9lBSjyso9s9wb6vrdSxT7iVVFbbPA8Omp6Kq8aoqx94HAcsbT5uyT16DPUWF384etF7l6cttC3nsVZZKcUttq6KJpEMA7QujPR0Y7gZBBzg9TmXEV09XdOak3uiuNFcYuOCumxfCrpjbm/jVuoby/Uldbcz0LHUogp6Z7QSJCzmcXvGMgk4B64zgijNI43HUsT5PWNZXtc7zzzygn+0tp+7laLbtZqS4l/J6JZquXm9nLC8/uWrXQUZfq+xxebrjSN+fxmBdHQWTsU5zeWY9TCMOWMUbAdUcKezV7vb7n7xVdvdK/nkgt1c+CBxz1wwZDfkbhSht9pDTeiNNRWDS1pp7bQQkuEULfhOPdznHq5x6ZcST0XtN7fOV9XJlbOSxJto6EYRi8pH5ljZLE6ORoc1ww5rhkEeYKpnprhU1XYeJ221sFPTVGi6K7C4x1hqG87ImO8RkDo/hc/MGtyAQQM5HZXORSqvnUmo+ZGdUZ4z5Adlj+6Gi9P7gaLrNLalpTUUNY0Z5HcskTwctkY77l7T1B+nIJCyBFUm08om0msMqTbeB22N1EJa7X9XNamvz4MVuZHUubn4PiFxaD8Yb8wVndLaU0/p3R1NpW02ungtFJB4EdIWczCzz5gc8xJJJJySSSV7KK22+23HO8kIVQh9VHTslptdmo/Q7TbqSgp+YuENLA2JgJ7nlaAMrg1RpzT+pKIUeobJb7rTtJLYq6lZM1p9oDgcH5F6aKrLzknhdjxtJ6R0tpeN7NN6ctVpEgw/0Gijh5+uepaAT869WpghqaeSnqImSxStLJI3tDmvaRggg9CCPJciI23uxhHjaX0jpXTT5X6d03abS6f8A0rqGijgMnXPUtAyvZIB7hERtvuEkuwHTsvj2tewtcA5pGCCOhX1F4emH6S2p240xqOW/6f0XZrfcpSSamClDXsz35PvM/wCzhZZUwQ1EXhzxMkZ35XtDh0+IrkQ9l65N7tniSXY1y8fl4Fz4nb8Gv5o7XBTUbf5kQe7+lIVefhztvvRsRpC3YAMNipOYD74xNcf2lU51FsRuXuZxN6l9O0/XWi1Vl7nlqbpWRcsLaYyENMR/71xjA5Q3PfrgAq+Nqo4LdbKegpW8kFLEyGJvsa0BoH0ALfrJw6VdcX2Rl00Zc85NHYREXPNYREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQEb8Xtcbfw0a0qG93WeWEfLJiP+8tduztDLcd3NL0EML5XT3yjaGMGSR47CfoAJ+QLaLrbTln1bpWu05f6NtZbbjCYqmBzi3nbnPQgggggEEdQQFhe0mw22W3N5N403YSLlyljKysqH1EsTT3DC84ZkdCQMkdMrdptVGmqUWt2ZbqJWTT8iSG9l8mfyQvfjPK0nC/SLCaipEnGdXtkc0aDovVcR/1w72/+Gvz9uhcPyDov1w7/AC1ar3ks/wCKqH9GZ9Se8dn/ABXQ/orPqX0C4hwj7H+Nnz/o7i32z8CKq/boXD8g6L9cO/y0+3QuH5B0X64d/lq1XvHZ/wAV0P6Kz6kFks/4qof0Zn1J6Q4R9j/Gx6O4t9s/Aitlt4ta6qomVB0XRs5x8H31ccdSPwa5/tra38jqP9aO/wACsaLNaQMC2UWP/LM+pPea1fi2j/RmfUvk9RTqJ3TnVZyxbeFjOFnZZ88es/QdHxHhFWmrrv0fPNJKUueS5mlu8LZZe+CuX21tb+R1H+tHf4E+2trfyOo/1o7/AAKxvvNavxbR/ozPqT3mtX4to/0Zn1Knw2s/rfhRp9LcB/t/+SRFOzu91TraO4OksFPR+gujA5Kwyc/MHf7Ix8FZr9mcn8hi/wCKfqWTU9voYARBR08fN35IWtz9AXL6PB+Cj/MC+c13A/2ku1Ep6fifJB9o9OLxt62/ecrUavQztcqtPyx8lzN495in2ZyfyGL/AIp+pPszk/kMX/FP1LK/R4PwUf5gT0eD8FH+YFk/07+1f93/AMUf1KPEaX+l82RruZutPpTRtVfWWeGpNO6NoidUlgdzPDe+Djuot+2zrvyMo/1o7/LVmZqKkmjMctNC9p7tdGCD82Fw+81p/FlH+js+pfS8H0PEtLp3DW6rrTznm5VHbbbC/wDbnz/FNLrNRep6O/pRx25VLfffLK2fbZ135GUf60d/lp9tnXfkZR/rR3+WrJ+81p/FlH+js+pPea0/iyj/AEdn1Lq8ln83yOb6M4z9t/BErhR8V1bPWRQnRtGPFlazIujumXAZ+B8as4F0hZ7UDkW2jGO3/R2fUu6pwUl9Z5Onw7TayhS8Td1M4xslj4BERTOiEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAEREAREQBERAf/2Q==" alt="TripFactory"></div>
+      <div class="hdiv"></div>
+      <div>
+        <div class="hero-title">Business Structure &amp; Department Framework</div>
+        <div class="hero-sub">India Office &nbsp;·&nbsp; Organisational Design &nbsp;·&nbsp; Roles &amp; Functions</div>
+      </div>
+    </div>
+    <div class="hero-pills">
+      <span class="hpill">7 departments</span>
+      <span class="hpill">Full org structure</span>
+      <span class="hpill">Customer journey flow</span>
+    </div>
+  </div>
+</header>
+
+<!-- TABS -->
+<nav class="tab-bar">
+  <div class="tab-inner">
+    <button class="tab-btn active" onclick="showTab('structure',this)">🏢 Department Structure</button>
+    <button class="tab-btn" onclick="showTab('flow',this)">🔄 How It All Flows</button>
+  </div>
+</nav>
+
+<!-- ═══════════ TAB 1: STRUCTURE ═══════════ -->
+<div id="tab-structure" class="tab-panel active">
+
+  <div class="intro-bar">
+    <div class="ib-icon">🏢</div>
+    <div>
+      <h2>TripFactory India — Organisational Structure</h2>
+      <p>TripFactory operates across seven core departments, each with a defined mission, team structure, and set of roles. The Sales department is the commercial engine — split into B2C, B2B, and Tours verticals. Given the volume of escorted and group tours, TripFactory maintains a dedicated Tours Operations team separate from general Operations, ensuring specialist focus on complex multi-component itineraries.</p>
+    </div>
+  </div>
+
+  <div class="dept-grid">
+
+    <!-- MARKETING -->
+    <div class="dept-card dm">
+      <div class="dept-head">
+        <div class="dept-head-top">
+          <div class="dept-icon">📣</div>
+          <div class="dept-num">Dept 1</div>
+          <div class="dept-name">Marketing</div>
+        </div>
+        <div class="dept-mission">Drive brand awareness, generate leads and build TripFactory's digital presence across B2C and B2B channels.</div>
+      </div>
+      <div class="sub-teams">
+        <div class="sub-team">
+          <div class="sub-team-head">
+            <div class="st-dot" style="background:var(--mkt)"></div>
+            <div class="st-name">Digital &amp; Content</div>
+            <span class="st-badge">Core team</span>
+          </div>
+          <div class="roles-list">
+            <div class="role-item">
+              <div class="role-title">Marketing Manager</div>
+              <ul class="role-duties">
+                <li>Own overall marketing strategy and annual plan</li>
+                <li>Manage campaigns across all digital channels</li>
+                <li>Report on lead generation, CAC and ROI monthly</li>
+              </ul>
+            </div>
+            <div class="role-item">
+              <div class="role-title">Digital Marketing Executive</div>
+              <ul class="role-duties">
+                <li>Run Google Ads, Meta, Instagram &amp; YouTube campaigns</li>
+                <li>Manage SEO, SEM and performance marketing</li>
+                <li>Track and optimise cost per lead across channels</li>
+              </ul>
+            </div>
+            <div class="role-item">
+              <div class="role-title">Content &amp; Social Media Executive</div>
+              <ul class="role-duties">
+                <li>Create destination content, reels, blog posts &amp; emailers</li>
+                <li>Manage social media calendar and engagement</li>
+                <li>Produce itinerary PDFs and sales collateral for the team</li>
+              </ul>
+            </div>
+            <div class="role-item">
+              <div class="role-title">CRM &amp; Retention Executive</div>
+              <ul class="role-duties">
+                <li>Manage email marketing, WhatsApp broadcasts and re-engagement</li>
+                <li>Segment database by interest, travel history and LTV</li>
+                <li>Track repeat booking rate and referral conversions</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SALES -->
+    <div class="dept-card ds">
+      <div class="dept-head">
+        <div class="dept-head-top">
+          <div class="dept-icon">💼</div>
+          <div class="dept-num">Dept 2</div>
+          <div class="dept-name">Sales</div>
+        </div>
+        <div class="dept-mission">Convert enquiries into confirmed bookings across B2C direct, B2B trade, and group/escorted tour channels.</div>
+      </div>
+      <div class="sub-teams">
+
+        <div class="sub-team">
+          <div class="sub-team-head">
+            <div class="st-dot" style="background:var(--sales)"></div>
+            <div class="st-name">B2C — Direct Sales</div>
+            <span class="st-badge">Consumer</span>
+          </div>
+          <div class="roles-list">
+            <div class="role-item">
+              <div class="role-title">B2C Sales Team Leader</div>
+              <ul class="role-duties">
+                <li>Manage direct consumer enquiries and the sales pipeline</li>
+                <li>Coach agents on conversion, upselling and product knowledge</li>
+              </ul>
+            </div>
+            <div class="role-item">
+              <div class="role-title">Trip Factory Sales Agent (B2C)</div>
+              <ul class="role-duties">
+                <li>Full-circle ownership from enquiry to financial close</li>
+                <li>Single point of contact for the customer throughout</li>
+                <li>Responsible for booking accuracy and financial integrity</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="sub-team">
+          <div class="sub-team-head">
+            <div class="st-dot" style="background:var(--sales)"></div>
+            <div class="st-name">B2B — Trade &amp; Agent Sales</div>
+            <span class="st-badge">Trade</span>
+          </div>
+          <div class="roles-list">
+            <div class="role-item">
+              <div class="role-title">B2B Sales Manager</div>
+              <ul class="role-duties">
+                <li>Develop and manage the trade agent partner network</li>
+                <li>Negotiate commission structures and commercial agreements</li>
+              </ul>
+            </div>
+            <div class="role-item">
+              <div class="role-title">Trip Factory Sales Agent (B2B)</div>
+              <ul class="role-duties">
+                <li>Manage bookings originating from trade agent partners</li>
+                <li>Act as single point of contact for partner agent</li>
+                <li>Coordinate all components including flights, visa and ops</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="sub-team">
+          <div class="sub-team-head">
+            <div class="st-dot" style="background:var(--sales)"></div>
+            <div class="st-name">Group &amp; Escorted Tours Sales</div>
+            <span class="st-badge">Tours</span>
+          </div>
+          <div class="roles-list">
+            <div class="role-item">
+              <div class="role-title">Tours Sales Manager</div>
+              <ul class="role-duties">
+                <li>Lead sales of fixed-departure and group escorted tours</li>
+                <li>Liaise with Tours Ops on availability and capacity</li>
+              </ul>
+            </div>
+            <div class="role-item">
+              <div class="role-title">Tours Sales Agent</div>
+              <ul class="role-duties">
+                <li>Sell fixed-departure tour products to individuals and groups</li>
+                <li>Manage all components including group flights and visa</li>
+                <li>Coordinate rooming lists and special requests with Tours Ops</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- OPERATIONS -->
+    <div class="dept-card do">
+      <div class="dept-head">
+        <div class="dept-head-top">
+          <div class="dept-icon">⚙️</div>
+          <div class="dept-num">Dept 3</div>
+          <div class="dept-name">Admin &amp; Operations</div>
+        </div>
+        <div class="dept-mission">Ensure all non-tour bookings are accurately processed, confirmed, and delivered — and that all back-office administration runs efficiently.</div>
+      </div>
+      <div class="sub-teams">
+        <div class="sub-team">
+          <div class="sub-team-head">
+            <div class="st-dot" style="background:var(--ops)"></div>
+            <div class="st-name">Flights Team</div>
+            <span class="st-badge">Specialist</span>
+          </div>
+          <div class="roles-list">
+            <div class="role-item">
+              <div class="role-title">Flights Team Leader</div>
+              <ul class="role-duties">
+                <li>Oversee all flight requests from sales agents</li>
+                <li>Manage GDS relationships and consolidator contracts</li>
+              </ul>
+            </div>
+            <div class="role-item">
+              <div class="role-title">Ticketing &amp; Reservations Executive</div>
+              <ul class="role-duties">
+                <li>Process all flight bookings via Amadeus / Galileo / NDC</li>
+                <li>Issue tickets and manage changes, cancellations and refunds</li>
+                <li>Handle schedule change notifications and re-protection</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="sub-team">
+          <div class="sub-team-head">
+            <div class="st-dot" style="background:var(--ops)"></div>
+            <div class="st-name">Booking Administration</div>
+            <span class="st-badge">Core</span>
+          </div>
+          <div class="roles-list">
+            <div class="role-item">
+              <div class="role-title">Operations &amp; Admin Executive</div>
+              <ul class="role-duties">
+                <li>Support agents with supplier confirmations and voucher production</li>
+                <li>Maintain booking system records and document management</li>
+                <li>Handle hotel, transfer and ground supplier communications</li>
+                <li>Produce travel document packs for agent review</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOURS OPS -->
+    <div class="dept-card dt">
+      <div class="dept-head">
+        <div class="dept-head-top">
+          <div class="dept-icon">🗺️</div>
+          <div class="dept-num">Dept 4</div>
+          <div class="dept-name">Tours Operations</div>
+        </div>
+        <div class="dept-mission">Dedicated team for the planning, execution and on-ground management of all TripFactory escorted and group tour products.</div>
+      </div>
+      <div class="sub-teams">
+        <div class="sub-team">
+          <div class="sub-team-head">
+            <div class="st-dot" style="background:var(--tours)"></div>
+            <div class="st-name">Tour Planning &amp; Product</div>
+            <span class="st-badge">Product</span>
+          </div>
+          <div class="roles-list">
+            <div class="role-item">
+              <div class="role-title">Head of Tours Operations</div>
+              <ul class="role-duties">
+                <li>Own the full fixed-departure tour product portfolio</li>
+                <li>Manage supplier contracts — hotels, coaches, guides</li>
+                <li>Set tour capacity, pricing and departure schedules</li>
+              </ul>
+            </div>
+            <div class="role-item">
+              <div class="role-title">Tour Coordinator</div>
+              <ul class="role-duties">
+                <li>Build and manage rooming lists and group manifests</li>
+                <li>Coordinate group flights brief with the flights team</li>
+                <li>Liaise with local destination management companies (DMCs)</li>
+                <li>Produce tour leader kits and on-ground briefing documents</li>
+              </ul>
+            </div>
+            <div class="role-item">
+              <div class="role-title">Tour Leader / Escort (in-destination)</div>
+              <ul class="role-duties">
+                <li>Accompany group throughout the full tour itinerary</li>
+                <li>Manage all on-ground logistics, guides and suppliers</li>
+                <li>Handle any client issues or emergencies during the tour</li>
+                <li>Submit daily tour reports and expenses to ops</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VISA -->
+    <div class="dept-card dv">
+      <div class="dept-head">
+        <div class="dept-head-top">
+          <div class="dept-icon">🛂</div>
+          <div class="dept-num">Dept 5</div>
+          <div class="dept-name">Visa Services</div>
+        </div>
+        <div class="dept-mission">Manage all visa processing coordination on behalf of clients, working with approved external visa partners to ensure timely and accurate visa approval.</div>
+      </div>
+      <div class="sub-teams">
+        <div class="sub-team">
+          <div class="sub-team-head">
+            <div class="st-dot" style="background:var(--visa)"></div>
+            <div class="st-name">Visa Processing Team</div>
+            <span class="st-badge">Specialist</span>
+          </div>
+          <div class="roles-list">
+            <div class="role-item">
+              <div class="role-title">Visa Services Manager</div>
+              <ul class="role-duties">
+                <li>Manage relationships with external visa processing partners</li>
+                <li>Maintain up-to-date visa requirement knowledge per destination</li>
+                <li>Oversee all outstanding applications and SLA compliance</li>
+                <li>Handle escalations on refusals or complex cases</li>
+              </ul>
+            </div>
+            <div class="role-item">
+              <div class="role-title">Visa Processing Executive</div>
+              <ul class="role-duties">
+                <li>Receive visa requests from sales agents and initiate processing</li>
+                <li>Issue invitation letters and sponsorship documentation</li>
+                <li>Chase external partners for progress updates twice per week</li>
+                <li>Update booking CRM with all application milestones</li>
+                <li>Verify visa validity and entries on receipt from client</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CUSTOMER SERVICES -->
+    <div class="dept-card dc">
+      <div class="dept-head">
+        <div class="dept-head-top">
+          <div class="dept-icon">🎧</div>
+          <div class="dept-num">Dept 6</div>
+          <div class="dept-name">Customer Services</div>
+        </div>
+        <div class="dept-mission">Handle all post-booking client queries, in-trip support escalations, complaints and feedback — protecting the TripFactory brand through every client interaction.</div>
+      </div>
+      <div class="sub-teams">
+        <div class="sub-team">
+          <div class="sub-team-head">
+            <div class="st-dot" style="background:var(--cs)"></div>
+            <div class="st-name">Client Support Team</div>
+            <span class="st-badge">Core</span>
+          </div>
+          <div class="roles-list">
+            <div class="role-item">
+              <div class="role-title">Customer Services Manager</div>
+              <ul class="role-duties">
+                <li>Set service standards and response SLAs across all channels</li>
+                <li>Manage escalated complaints and supplier dispute resolution</li>
+                <li>Report on NPS, CSAT and review scores monthly</li>
+                <li>Build feedback loop between CS and sales / ops</li>
+              </ul>
+            </div>
+            <div class="role-item">
+              <div class="role-title">Customer Services Executive</div>
+              <ul class="role-duties">
+                <li>Handle in-trip client issues escalated from sales agents</li>
+                <li>Manage complaints, refund requests and compensation claims</li>
+                <li>Coordinate with suppliers on service failures</li>
+                <li>Follow up post-trip to collect reviews and feedback</li>
+                <li>Maintain client satisfaction database and trend reports</li>
+              </ul>
+            </div>
+            <div class="role-item">
+              <div class="role-title">After-hours Support Co-ordinator</div>
+              <ul class="role-duties">
+                <li>Provide out-of-hours emergency support for live trips</li>
+                <li>Triage critical issues and escalate to relevant departments</li>
+                <li>Maintain an on-call rota across the team</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FINANCE -->
+    <div class="dept-card df">
+      <div class="dept-head">
+        <div class="dept-head-top">
+          <div class="dept-icon">💰</div>
+          <div class="dept-num">Dept 7</div>
+          <div class="dept-name">Finance</div>
+        </div>
+        <div class="dept-mission">Maintain financial accuracy and integrity across all bookings — from client invoicing and supplier payments to reporting, reconciliation and compliance.</div>
+      </div>
+      <div class="sub-teams">
+        <div class="sub-team">
+          <div class="sub-team-head">
+            <div class="st-dot" style="background:var(--fin)"></div>
+            <div class="st-name">Finance &amp; Accounts</div>
+            <span class="st-badge">Core</span>
+          </div>
+          <div class="roles-list">
+            <div class="role-item">
+              <div class="role-title">Finance Manager</div>
+              <ul class="role-duties">
+                <li>Oversee all accounts payable, receivable and reconciliation</li>
+                <li>Manage monthly P&amp;L, cash flow and departmental budgets</li>
+                <li>Ensure compliance with GST, TDS and statutory requirements</li>
+                <li>Produce financial reports for management and investors</li>
+              </ul>
+            </div>
+            <div class="role-item">
+              <div class="role-title">Accounts Executive — Receivables</div>
+              <ul class="role-duties">
+                <li>Issue all client invoices and track payment receipt</li>
+                <li>Chase outstanding balances and escalate to sales agent</li>
+                <li>Reconcile all receipts against the booking system daily</li>
+                <li>Manage trade agent commission payments and statements</li>
+              </ul>
+            </div>
+            <div class="role-item">
+              <div class="role-title">Accounts Executive — Payables</div>
+              <ul class="role-duties">
+                <li>Process all supplier invoices — verify rates against contract</li>
+                <li>Manage payment schedules for hotels, DMCs and operators</li>
+                <li>Handle foreign currency payments and exchange reconciliation</li>
+                <li>Maintain supplier ledger and flag any overdue or disputed items</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /dept-grid -->
+
+  <div class="func-strip">
+    <h4>Key cross-department functions</h4>
+    <div class="func-pills">
+      <span class="fpill">CRM &amp; booking system management</span>
+      <span class="fpill">Product &amp; destination training</span>
+      <span class="fpill">Supplier relationship management</span>
+      <span class="fpill">Quality assurance &amp; audit</span>
+      <span class="fpill">Technology &amp; digital tools</span>
+      <span class="fpill">HR &amp; people development</span>
+      <span class="fpill">Regulatory compliance &amp; GST</span>
+      <span class="fpill">Agent partner onboarding</span>
+    </div>
+  </div>
+
+</div><!-- /tab-structure -->
+
+
+<!-- ═══════════ TAB 2: FLOW ═══════════ -->
+<div id="tab-flow" class="tab-panel">
+
+  <div class="flow-intro">
+    <div class="flow-intro-icon">🔄</div>
+    <div>
+      <h2>How TripFactory works — end to end</h2>
+      <p>Every department plays a role in delivering a seamless customer experience. From the first marketing impression through to post-trip financial close, the structure below shows how each team hands off to the next — and where the Sales Agent sits at the centre of it all.</p>
+    </div>
+  </div>
+
+  <!-- ORG CHART -->
+  <div style="background:white;border:1px solid var(--border);border-radius:16px;padding:32px 28px;margin-bottom:28px">
+    <div style="text-align:center;font-size:10.5px;font-weight:800;color:var(--soft);text-transform:uppercase;letter-spacing:.09em;margin-bottom:24px">Organisational hierarchy</div>
+
+    <!-- CEO -->
+    <div style="display:flex;justify-content:center;margin-bottom:0">
+      <div style="background:var(--navy);color:white;border-radius:12px;padding:14px 40px;text-align:center;border:2px solid var(--blue);min-width:220px">
+        <div style="font-size:13px;font-weight:800;margin-bottom:2px">CEO / Managing Director</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.45)">TripFactory India</div>
+      </div>
+    </div>
+
+    <!-- V line -->
+    <div style="width:2px;height:28px;background:var(--border);margin:0 auto"></div>
+
+    <!-- Horizontal bar + dept cols -->
+    <div style="position:relative">
+      <div style="position:absolute;top:0;left:6%;right:6%;height:2px;background:var(--border)"></div>
+      <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:10px;padding-top:2px">
+
+        <div class="fd-col fd-mkt">
+          <div class="fd-vline" style="height:26px"></div>
+          <div class="fd-box">
+            <div class="fd-icon">📣</div>
+            <h4>Marketing</h4>
+            <p>Lead generation &amp; brand</p>
+          </div>
+          <div class="fd-subs">
+            <div class="fd-sub">Digital &amp; Content</div>
+            <div class="fd-sub">CRM &amp; Retention</div>
+          </div>
+        </div>
+
+        <div class="fd-col fd-sales">
+          <div class="fd-vline" style="height:26px"></div>
+          <div class="fd-box">
+            <div class="fd-icon">💼</div>
+            <h4>Sales</h4>
+            <p>Enquiry to booking</p>
+          </div>
+          <div class="fd-subs">
+            <div class="fd-sub">B2C Direct</div>
+            <div class="fd-sub">B2B Trade</div>
+            <div class="fd-sub">Tours Sales</div>
+          </div>
+        </div>
+
+        <div class="fd-col fd-ops">
+          <div class="fd-vline" style="height:26px"></div>
+          <div class="fd-box">
+            <div class="fd-icon">⚙️</div>
+            <h4>Operations</h4>
+            <p>Flights &amp; admin</p>
+          </div>
+          <div class="fd-subs">
+            <div class="fd-sub">Flights Team</div>
+            <div class="fd-sub">Booking Admin</div>
+          </div>
+        </div>
+
+        <div class="fd-col fd-tours">
+          <div class="fd-vline" style="height:26px"></div>
+          <div class="fd-box">
+            <div class="fd-icon">🗺️</div>
+            <h4>Tours Ops</h4>
+            <p>Group &amp; escorted tours</p>
+          </div>
+          <div class="fd-subs">
+            <div class="fd-sub">Tour Planning</div>
+            <div class="fd-sub">Tour Leaders</div>
+          </div>
+        </div>
+
+        <div class="fd-col fd-visa">
+          <div class="fd-vline" style="height:26px"></div>
+          <div class="fd-box">
+            <div class="fd-icon">🛂</div>
+            <h4>Visa</h4>
+            <p>Application &amp; tracking</p>
+          </div>
+          <div class="fd-subs">
+            <div class="fd-sub">Processing</div>
+            <div class="fd-sub">Verification</div>
+          </div>
+        </div>
+
+        <div class="fd-col fd-cs">
+          <div class="fd-vline" style="height:26px"></div>
+          <div class="fd-box">
+            <div class="fd-icon">🎧</div>
+            <h4>Customer Services</h4>
+            <p>Support &amp; resolution</p>
+          </div>
+          <div class="fd-subs">
+            <div class="fd-sub">In-trip Support</div>
+            <div class="fd-sub">Complaints</div>
+          </div>
+        </div>
+
+        <div class="fd-col fd-fin">
+          <div class="fd-vline" style="height:26px"></div>
+          <div class="fd-box">
+            <div class="fd-icon">💰</div>
+            <h4>Finance</h4>
+            <p>Payments &amp; reporting</p>
+          </div>
+          <div class="fd-subs">
+            <div class="fd-sub">Receivables</div>
+            <div class="fd-sub">Payables</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- CUSTOMER JOURNEY FLOW -->
+  <div class="journey-section">
+    <div class="journey-title">Customer booking journey — how departments interact</div>
+    <div class="journey-flow">
+
+      <div class="jf-step">
+        <div class="jf-num" style="background:var(--mkt-bg);color:var(--mkt)">1</div>
+        <div class="jf-dept" style="background:var(--mkt-bg);color:var(--mkt-dk)">Marketing</div>
+        <h4>Awareness &amp; Lead</h4>
+        <p>Digital campaign, social content or word-of-mouth drives the client to TripFactory. Lead captured via web form, WhatsApp or trade agent referral and passed to Sales.</p>
+      </div>
+
+      <div class="jf-step">
+        <div class="jf-num" style="background:var(--sales-bg);color:var(--sales)">2</div>
+        <div class="jf-dept" style="background:var(--sales-bg);color:var(--sales-dk)">Sales Agent</div>
+        <h4>Qualify, Propose &amp; Close</h4>
+        <p>Agent qualifies the enquiry, builds an itinerary proposal with correct margins, negotiates and collects the deposit. Booking file opened in the system immediately.</p>
+      </div>
+
+      <div class="jf-step">
+        <div class="jf-num" style="background:var(--ops-bg);color:var(--ops)">3</div>
+        <div class="jf-dept" style="background:var(--ops-bg);color:var(--ops-dk)">Operations</div>
+        <h4>Flights Ticketed</h4>
+        <p>Agent submits flight brief to the Flights Team. Tickets are issued and verified. Agent confirms details and adds e-tickets to the client file. Schedule changes monitored.</p>
+      </div>
+
+      <div class="jf-step">
+        <div class="jf-num" style="background:var(--visa-bg);color:var(--visa)">4</div>
+        <div class="jf-dept" style="background:var(--visa-bg);color:var(--visa-dk)">Visa Team</div>
+        <h4>Visa Processing</h4>
+        <p>Agent initiates the visa request. The Visa Team coordinates with the external partner, tracks progress bi-weekly and verifies the visa on receipt. Agent is updated throughout.</p>
+      </div>
+
+      <div class="jf-step">
+        <div class="jf-num" style="background:var(--tours-bg);color:var(--tours)">5</div>
+        <div class="jf-dept" style="background:var(--tours-bg);color:var(--tours-dk)">Tours Ops</div>
+        <h4>Tour Confirmation</h4>
+        <p>For escorted tours, Tours Ops manages the rooming list, group manifests, DMC briefings and Tour Leader assignment. Agent is the client's contact; Tours Ops runs the engine.</p>
+      </div>
+
+      <div class="jf-step">
+        <div class="jf-num" style="background:var(--sales-bg);color:var(--sales)">6</div>
+        <div class="jf-dept" style="background:var(--sales-bg);color:var(--sales-dk)">Sales Agent</div>
+        <h4>Docs, Briefing &amp; Departure</h4>
+        <p>Agent collects the balance, compiles the travel document pack, conducts the pre-departure call and confirms all components. Client departs with full confidence.</p>
+      </div>
+
+      <div class="jf-step">
+        <div class="jf-num" style="background:var(--cs-bg);color:var(--cs)">7</div>
+        <div class="jf-dept" style="background:var(--cs-bg);color:var(--cs-dk)">Customer Services</div>
+        <h4>In-trip Support</h4>
+        <p>Agent handles frontline in-trip issues. Critical escalations go to Customer Services. CS manages complaints, supplier failures and after-hours emergencies with the on-call team.</p>
+      </div>
+
+      <div class="jf-step">
+        <div class="jf-num" style="background:var(--fin-bg);color:var(--fin)">8</div>
+        <div class="jf-dept" style="background:var(--fin-bg);color:var(--fin-dk)">Finance</div>
+        <h4>Reconciliation &amp; Close</h4>
+        <p>Finance validates all supplier invoices, processes payables and reconciles the booking P&amp;L. Trade agent commission is paid. Booking is financially closed with margin confirmed.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- HANDOFF MATRIX -->
+  <div class="matrix-section">
+    <div style="font-size:10.5px;font-weight:800;color:var(--soft);text-transform:uppercase;letter-spacing:.09em;margin-bottom:16px;text-align:center">Key department handoffs &amp; dependencies</div>
+    <div class="matrix-grid">
+
+      <div class="matrix-card">
+        <h4><span style="font-size:16px">💼</span> Sales Agent triggers</h4>
+        <ul>
+          <li>Submits flight brief → Flights Team actions it</li>
+          <li>Initiates visa request → Visa Team tracks it</li>
+          <li>Sends rooming list → Tours Ops builds the manifest</li>
+          <li>Escalates in-trip issue → Customer Services owns it</li>
+          <li>Closes booking → Finance reconciles and pays</li>
+        </ul>
+      </div>
+
+      <div class="matrix-card">
+        <h4><span style="font-size:16px">🔄</span> Operations &amp; Tours Ops feed back to Sales</h4>
+        <ul>
+          <li>Flights confirmed → Agent receives e-tickets &amp; adds to pack</li>
+          <li>Tour manifest finalised → Agent communicates to client</li>
+          <li>Visa granted → Agent verifies and adds to pre-dep checklist</li>
+          <li>Schedule change → Agent contacts client and re-books</li>
+          <li>Supplier issue on-trip → Agent keeps client informed</li>
+        </ul>
+      </div>
+
+      <div class="matrix-card">
+        <h4><span style="font-size:16px">💰</span> Finance monitors throughout</h4>
+        <ul>
+          <li>Deposit received → Finance records and issues receipt</li>
+          <li>Supplier invoice arrives → Verified vs agreed rates</li>
+          <li>Balance due → Finance alerts agent &amp; chases if overdue</li>
+          <li>Amendment made → Cost impact calculated and recorded</li>
+          <li>Booking closed → P&amp;L confirmed, commission processed</li>
+        </ul>
+      </div>
+
+      <div class="matrix-card">
+        <h4><span style="font-size:16px">📣</span> Marketing &amp; Sales alignment</h4>
+        <ul>
+          <li>Marketing generates leads → passed to correct sales team</li>
+          <li>Sales share conversion data → Marketing optimises spend</li>
+          <li>Sales flag product gaps → Marketing builds new campaigns</li>
+          <li>CS reviews feed into content → destination advice &amp; FAQs</li>
+          <li>Repeat client data → CRM retargeting and loyalty comms</li>
+        </ul>
+      </div>
+
+      <div class="matrix-card">
+        <h4><span style="font-size:16px">🎧</span> Customer Services escalation path</h4>
+        <ul>
+          <li>Frontline: Sales Agent handles all direct client contact</li>
+          <li>Level 1 escalation: CS Executive takes the case</li>
+          <li>Level 2 escalation: CS Manager + supplier management</li>
+          <li>After hours: On-call co-ordinator manages live emergencies</li>
+          <li>Post-trip: CS collects feedback, logs for supplier review</li>
+        </ul>
+      </div>
+
+      <div class="matrix-card">
+        <h4><span style="font-size:16px">🗺️</span> Tours Ops — unique to TripFactory</h4>
+        <ul>
+          <li>Works directly with Tours Sales on capacity &amp; availability</li>
+          <li>Manages DMC and ground operator relationships in-destination</li>
+          <li>Briefs and deploys Tour Leaders for each departure</li>
+          <li>Feeds post-tour reports back to product &amp; sales teams</li>
+          <li>Flags pricing changes to Finance for contract renewal</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+</div><!-- /tab-flow -->
+
+<footer>
+  <div class="footer-inner">
+    <span><strong>TripFactory</strong> · Business Structure &amp; Department Framework · India Office</span>
+    <span>Internal document · Travel Answers Group</span>
+  </div>
+</footer>
+
+<script>
+function showTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo({top: 68, behavior: 'smooth'});
+}
+</script>
+</body>
+</html>
