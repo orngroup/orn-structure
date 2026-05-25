@@ -1470,8 +1470,53 @@ function showTab(id, btn) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('tab-' + id).classList.add('active');
   btn.classList.add('active');
-  window.scrollTo({top: 68, behavior: 'smooth'});
+  window.scrollTo({top: 150, behavior: 'smooth'});
 }
+
+const DEPT_COLOURS = {
+  mkt:   { bg: '#fff7e6', text: '#7a4d08', active: '#c97d10' },
+  sales: { bg: '#e6f8f2', text: '#0a5a46', active: '#1a9e75' },
+  ops:   { bg: '#e6f4fc', text: '#0e4e7a', active: '#1778b8' },
+  tours: { bg: '#e0f5fb', text: '#064e60', active: '#0e7490' },
+  visa:  { bg: '#f0effe', text: '#3c2fa0', active: '#6b5ce7' },
+  cs:    { bg: '#fceee8', text: '#7a2610', active: '#c64120' },
+  fin:   { bg: '#eaf6e6', text: '#185a0a', active: '#2a8a18' }
+};
+
+function showSub(id, btn) {
+  // Only affect sub-panels & buttons inside this button's parent tab-panel
+  const panel = btn.closest('.tab-panel');
+  panel.querySelectorAll('.sub-panel').forEach(p => p.classList.remove('active'));
+  panel.querySelectorAll('.sub-tab-btn').forEach(b => {
+    b.classList.remove('active');
+    b.style.background = '';
+    b.style.color = '';
+    b.style.boxShadow = '';
+  });
+
+  const target = document.getElementById('sub-' + id);
+  if (target) target.classList.add('active');
+
+  btn.classList.add('active');
+  const c = DEPT_COLOURS[id];
+  if (c) {
+    btn.style.background = c.active;
+    btn.style.color = 'white';
+    btn.style.boxShadow = '0 2px 8px ' + c.active + '55';
+  }
+  window.scrollTo({ top: 180, behavior: 'smooth' });
+}
+
+// Set first sub-tab styled on load
+document.addEventListener('DOMContentLoaded', function() {
+  const firstBtn = document.querySelector('.sub-tab-btn');
+  if (firstBtn) {
+    const c = DEPT_COLOURS['mkt'];
+    firstBtn.style.background = c.active;
+    firstBtn.style.color = 'white';
+    firstBtn.style.boxShadow = '0 2px 8px ' + c.active + '55';
+  }
+});
 </script>
 
 <!-- ═══════════ TAB 3: ENQUIRY FLOWCHART ═══════════ -->
